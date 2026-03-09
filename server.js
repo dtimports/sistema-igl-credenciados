@@ -161,54 +161,36 @@ async function initializeSheets() {
   }
 }
 
-// Ensure Google Drive folder exists for storing photos
+// Ensure Google Drive folder exists for storing photos (Shared Drive)
 async function ensureDriveFolder() {
   try {
     if (DRIVE_FOLDER_ID) return DRIVE_FOLDER_ID;
     
-    // Search for existing folder
+    // Search for existing folder in Shared Drives
     const searchResponse = await drive.files.list({
       q: "name='IGL Certificados Fotos' and mimeType='application/vnd.google-apps.folder' and trashed=false",
-      fields: 'files(id, name)'
+      fields: 'files(id, name)',
+      includeItemsFromAllDrives: true,
+      supportsAllDrives: true,
+      corpora: 'allDrives'
     });
     
     if (searchResponse.data.files.length > 0) {
       const folderId = searchResponse.data.files[0].id;
-      console.log('📁 Pasta do Drive encontrada:', folderId);
+      console.log('📁 Pasta do Shared Drive encontrada:', folderId);
       return folderId;
     }
     
-    // Create new folder
-    const folderMetadata = {
-      name: 'IGL Certificados Fotos',
-      mimeType: 'application/vnd.google-apps.folder'
-    };
-    
-    const folder = await drive.files.create({
-      resource: folderMetadata,
-      fields: 'id'
-    });
-    
-    const folderId = folder.data.id;
-    
-    // Make folder publicly accessible (view only)
-    await drive.permissions.create({
-      fileId: folderId,
-      resource: {
-        role: 'reader',
-        type: 'anyone'
-      }
-    });
-    
-    console.log('📁 Pasta do Drive criada:', folderId);
-    return folderId;
+    console.error('❌ DRIVE_FOLDER_ID não configurado e pasta não encontrada no Shared Drive.');
+    console.error('   Configure a variável DRIVE_FOLDER_ID com o ID da pasta no Shared Drive.');
+    return null;
   } catch (error) {
-    console.error('Erro ao criar pasta no Drive:', error.message);
+    console.error('Erro ao buscar pasta no Drive:', error.message);
     return null;
   }
 }
 
-// Upload image to Google Drive and return public URL
+// Upload image to Google Drive (Shared Drive) and return public URL
 async function uploadImageToDrive(filePath, fileName, certificadoId) {
   try {
     const folderId = await ensureDriveFolder();
@@ -230,7 +212,8 @@ async function uploadImageToDrive(filePath, fileName, certificadoId) {
     const file = await drive.files.create({
       resource: fileMetadata,
       media: media,
-      fields: 'id, webViewLink, webContentLink'
+      fields: 'id, webViewLink, webContentLink',
+      supportsAllDrives: true
     });
     
     // Make file publicly accessible
@@ -239,13 +222,14 @@ async function uploadImageToDrive(filePath, fileName, certificadoId) {
       resource: {
         role: 'reader',
         type: 'anyone'
-      }
+      },
+      supportsAllDrives: true
     });
     
     // Get direct image URL (thumbnail format works reliably in img tags)
     const imageUrl = `https://drive.google.com/thumbnail?id=${file.data.id}&sz=w800`;
     
-    console.log(`📸 Imagem enviada ao Drive: ${imageUrl}`);
+    console.log(`📸 Imagem enviada ao Shared Drive: ${imageUrl}`);
     
     // Delete local file after upload
     fs.unlink(filePath, (err) => {
