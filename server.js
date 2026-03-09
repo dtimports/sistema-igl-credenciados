@@ -867,11 +867,18 @@ app.post('/api/buscar-certificados', async (req, res) => {
 });
 
 // Serve static files from React app
-app.use(express.static('client/build'));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build/index.html'));
-});
+const buildPath = path.join(__dirname, 'client/build');
+if (fs.existsSync(buildPath)) {
+  app.use(express.static(buildPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(buildPath, 'index.html'));
+  });
+} else {
+  console.warn('⚠️  client/build não encontrado. Execute: npm run build');
+  app.get('*', (req, res) => {
+    res.status(503).json({ error: 'App em construção. Tente novamente em alguns minutos.' });
+  });
+}
 
 app.listen(PORT, async () => {
   console.log(`Servidor rodando na porta ${PORT}`);
