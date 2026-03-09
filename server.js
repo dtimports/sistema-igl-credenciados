@@ -294,19 +294,14 @@ function normalizeDate(dateStr) {
 }
 
 // Function to search certificates across all state sheets
-async function searchCertificados(cpf, dataNascimento) {
+async function searchCertificados(cpf) {
   try {
     const allSheetNames = [...Object.values(STATE_SHEETS), 'Geral'];
     const allCertificates = [];
     const searchCPF = normalizeCPF(cpf);
-    const searchDate = normalizeDate(dataNascimento);
-    // Also create reversed DD/MM version for ambiguous dates
-    const isoMatch = dataNascimento.match(/^(\d{4})-(\d{2})-(\d{2})/);
-    const searchDateAlt = isoMatch ? `${isoMatch[1]}${isoMatch[3]}${isoMatch[2]}` : '';
     
     console.log('\n=== BUSCA DE CERTIFICADO ===');
     console.log(`CPF buscado: ${cpf} -> ${searchCPF}`);
-    console.log(`Data buscada: ${dataNascimento} -> ${searchDate} (alt: ${searchDateAlt})`);
     
     for (const sheetName of allSheetNames) {
       try {
@@ -320,32 +315,17 @@ async function searchCertificados(cpf, dataNascimento) {
         
         const headers = rows[0];
         const cpfIndex = headers.findIndex(h => h.toLowerCase().includes('cpf'));
-        const dataNascIndex = headers.findIndex(h => h.toLowerCase().includes('nascimento'));
         
-        if (cpfIndex === -1 || dataNascIndex === -1) {
-          console.log(`Aba "${sheetName}": colunas CPF/Data não encontradas`);
+        if (cpfIndex === -1) {
+          console.log(`Aba "${sheetName}": coluna CPF não encontrada`);
           continue;
         }
         
         const dataRows = rows.slice(1);
-        if (dataRows.length > 0) {
-          console.log(`Aba "${sheetName}": ${dataRows.length} registros. Exemplo CPF: "${dataRows[0][cpfIndex]}", Data: "${dataRows[0][dataNascIndex]}"`);
-        }
         
         const matchingRows = dataRows.filter(row => {
           const rowCPF = normalizeCPF(row[cpfIndex]);
-          const rowDate = normalizeDate(row[dataNascIndex] || '');
-          
-          const cpfMatch = rowCPF === searchCPF;
-          // Try both date interpretations for ambiguous formats
-          const dateMatch = rowDate === searchDate || rowDate === searchDateAlt || 
-                           row[dataNascIndex] === dataNascimento;
-          
-          if (cpfMatch) {
-            console.log(`  -> CPF MATCH! Data planilha: "${row[dataNascIndex]}" (norm: ${rowDate}) vs buscada: ${searchDate} -> ${dateMatch ? 'ENCONTRADO!' : 'data não bate'}`);
-          }
-          
-          return cpfMatch && dateMatch;
+          return rowCPF === searchCPF;
         });
         
         matchingRows.forEach(row => {
@@ -795,19 +775,79 @@ app.post('/api/cadastro', authenticateToken, upload.single('fotoCarro'), async (
   }
 });
 
+// Endpoint para aplicador ver todos os carros que cadastrou
+app.get('/api/meus-cadastros', authenticateToken, async (req, res) => {
+  try {
+    const aplicadorNome = req.user.nome;
+    const allSheetNames = [...Object.values(STATE_SHEETS), 'Geral'];
+    const allCadastros = [];
+
+    console.log(`\n=== MEUS CADASTROS - Aplicador: ${aplicadorNome} ===`);
+
+    for (const sheetName of allSheetNames) {
+      try {
+        const response = await sheets.spreadsheets.values.get({
+          spreadsheetId: SPREADSHEET_ID,
+          range: `'${sheetName}'!A:S`
+        });
+
+        const rows = response.data.values || [];
+        if (rows.length <= 1) continue;
+
+        const headers = rows[0];
+        const aplicadorIndex = headers.findIndex(h => h.toLowerCase().includes('aplicador') && !h.toLowerCase().includes('telefone'));
+
+        if (aplicadorIndex === -1) continue;
+
+        const dataRows = rows.slice(1);
+        const matchingRows = dataRows.filter(row => {
+          const rowAplicador = (row[aplicadorIndex] || '').trim().toLowerCase();
+          return rowAplicador === aplicadorNome.trim().toLowerCase();
+        });
+
+        matchingRows.forEach(row => {
+          const obj = {};
+          headers.forEach((header, index) => {
+            const fieldName = FIELD_MAP[header] || header;
+            obj[fieldName] = row[index] || '';
+          });
+          allCadastros.push(obj);
+        });
+      } catch (err) {
+        continue;
+      }
+    }
+
+    console.log(`RESULTADO: ${allCadastros.length} cadastro(s) encontrado(s)\n`);
+
+    res.json({
+      success: true,
+      cadastros: allCadastros,
+      total: allCadastros.length
+    });
+
+  } catch (error) {
+    console.error('Erro ao buscar cadastros do aplicador:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
+  }
+});
+
 app.post('/api/buscar-certificados', async (req, res) => {
   try {
-    const { cpf, dataNascimento } = req.body;
+    const { cpf } = req.body;
 
-    if (!cpf || !dataNascimento) {
+    if (!cpf) {
       return res.status(400).json({
         success: false,
-        message: 'CPF e data de nascimento são obrigatórios'
+        message: 'CPF é obrigatório'
       });
     }
 
-    // Search in single sheet
-    const certificados = await searchCertificados(cpf, dataNascimento);
+    // Search by CPF only
+    const certificados = await searchCertificados(cpf);
 
     res.json({
       success: true,

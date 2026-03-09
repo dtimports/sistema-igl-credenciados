@@ -5,6 +5,7 @@ import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import CadastroPage from './components/CadastroPage';
 import BuscaCertificadoPage from './components/BuscaCertificadoPage';
+import MeusCadastrosPage from './components/MeusCadastrosPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/buscar-certificado" element={<BuscaCertificadoPage />} />
+          <Route path="/meus-cadastros" element={<MeusCadastrosPage />} />
         </Routes>
       </div>
     </Router>

@@ -339,7 +339,10 @@ const CadastroPage = () => {
   return (
     <div className="cadastro-container">
       <div className="cadastro-header">
-        <button onClick={() => navigate('/')} className="back-btn">← Voltar</button>
+        <div className="header-nav-buttons">
+          <button onClick={() => navigate('/')} className="back-btn">← Voltar</button>
+          <button onClick={() => navigate('/meus-cadastros')} className="back-btn meus-cadastros-btn">📋 Meus Cadastros</button>
+        </div>
         <div className="logo-wrapper-small">
           <div className="logo-circle-small">
             <img src="/logo.png" alt="IGL Coatings Logo" />

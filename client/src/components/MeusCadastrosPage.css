@@ -1,0 +1,396 @@
+.meus-cadastros-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #0a4d3c 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.meus-cadastros-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.03)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.meus-cadastros-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.meus-cadastros-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.meus-cadastros-header p {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.meus-cadastros-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Summary & Search */
+.cadastros-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 15px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  min-width: 120px;
+}
+
+.summary-number {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0a4d3c;
+  line-height: 1;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(10, 77, 60, 0.3);
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* Cards Grid */
+.cadastros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.cadastro-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.cadastro-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  border-color: #0a4d3c;
+}
+
+.cadastro-card-header {
+  background: linear-gradient(135deg, #1e3a5f, #0a4d3c);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-vehicle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-modelo {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.card-placa {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  width: fit-content;
+}
+
+.card-date {
+  font-size: 13px;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.cadastro-card-body {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-info-row {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.card-label {
+  font-weight: 600;
+  color: #666;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.card-value {
+  color: #333;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.card-products {
+  color: #0a4d3c;
+  font-weight: 600;
+}
+
+.card-cert-id {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #666;
+}
+
+.card-photo {
+  padding: 0 20px 16px;
+}
+
+.card-photo img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: white;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #0a4d3c;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+/* Error State */
+.error-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.error-state p {
+  color: #dc3545;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #0a4d3c, #0d6b54);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(10, 77, 60, 0.3);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .meus-cadastros-container {
+    padding: 12px;
+  }
+
+  .meus-cadastros-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .meus-cadastros-header p {
+    font-size: 0.95rem;
+  }
+
+  .cadastros-summary {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .summary-card {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .cadastros-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .cadastro-card-header {
+    padding: 14px 16px;
+  }
+
+  .card-modelo {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .meus-cadastros-container {
+    padding: 8px;
+  }
+
+  .meus-cadastros-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .meus-cadastros-header p {
+    font-size: 0.85rem;
+  }
+
+  .logo-circle-small {
+    width: 90px;
+    height: 90px;
+  }
+
+  .logo-circle-small img {
+    max-width: 90px;
+    max-height: 90px;
+  }
+
+  .cadastro-card-body {
+    padding: 12px 14px;
+  }
+
+  .card-info-row {
+    font-size: 13px;
+  }
+
+  .card-label {
+    min-width: 70px;
+  }
+
+  .search-input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .card-photo {
+    padding: 0 14px 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .meus-cadastros-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .cadastro-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}

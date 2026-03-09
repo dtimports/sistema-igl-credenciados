@@ -153,8 +153,7 @@ function calcMaintenanceSchedule(applicationDate) {
 const BuscaCertificadoPage = () => {
   const navigate = useNavigate();
   const [searchData, setSearchData] = useState({
-    cpf: '',
-    dataNascimento: ''
+    cpf: ''
   });
   const [loading, setLoading] = useState(false);
   const [certificados, setCertificados] = useState([]);
@@ -221,7 +220,7 @@ const BuscaCertificadoPage = () => {
       <div className="busca-content">
         <form onSubmit={handleSearch} className="search-form">
           <div className="form-row">
-            <div className="form-group">
+            <div className="form-group full-width">
               <label>CPF *</label>
               <input
                 type="text"
@@ -229,16 +228,6 @@ const BuscaCertificadoPage = () => {
                 value={searchData.cpf}
                 onChange={handleChange}
                 placeholder="Digite seu CPF"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Data de Nascimento *</label>
-              <input
-                type="date"
-                name="dataNascimento"
-                value={searchData.dataNascimento}
-                onChange={handleChange}
                 required
               />
             </div>
