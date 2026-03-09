@@ -615,12 +615,12 @@ app.post('/api/buscar-veiculo-por-placa', authenticateToken, async (req, res) =>
 // Cadastro de novo aplicador
 app.post('/api/cadastro-aplicador', async (req, res) => {
   try {
-    const { nome, email, senha, telefone } = req.body;
+    const { nome, email, senha, telefone, cnpj, instagram } = req.body;
 
-    if (!nome || !email || !senha) {
+    if (!nome || !email || !senha || !cnpj) {
       return res.status(400).json({
         success: false,
-        message: 'Nome, email e senha são obrigatórios'
+        message: 'Nome, email, CNPJ e senha são obrigatórios'
       });
     }
 
@@ -641,7 +641,9 @@ app.post('/api/cadastro-aplicador', async (req, res) => {
       email: email.trim().toLowerCase(),
       senha,
       telefone: telefone ? telefone.replace(/[^0-9]/g, '') : '',
-      ativo: true,
+      cnpj: cnpj ? cnpj.trim() : '',
+      instagram: instagram ? instagram.trim().replace(/^@/, '') : '',
+      ativo: false,
       dataCriacao: new Date().toISOString().split('T')[0]
     };
 
@@ -684,12 +686,20 @@ app.post('/api/login', async (req, res) => {
     }
 
     // Find aplicador by email
-    const aplicador = aplicadores.find(app => app.email === email && app.ativo);
+    const aplicador = aplicadores.find(app => app.email === email);
 
     if (!aplicador) {
       return res.status(401).json({
         success: false,
         message: 'Email ou senha incorretos'
+      });
+    }
+
+    // Check if account is pending approval
+    if (!aplicador.ativo) {
+      return res.status(403).json({
+        success: false,
+        message: 'Seu cadastro ainda está em análise. A aprovação leva até 24 horas.'
       });
     }
 

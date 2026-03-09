@@ -11,7 +11,9 @@ const CadastroAplicadorPage = () => {
     email: '',
     senha: '',
     confirmarSenha: '',
-    telefone: ''
+    telefone: '',
+    cnpj: '',
+    instagram: ''
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -33,9 +35,23 @@ const CadastroAplicadorPage = () => {
     return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
   };
 
+  const formatCNPJ = (value) => {
+    const digits = value.replace(/[^0-9]/g, '');
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 5) return `${digits.slice(0, 2)}.${digits.slice(2)}`;
+    if (digits.length <= 8) return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5)}`;
+    if (digits.length <= 12) return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8)}`;
+    return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8, 12)}-${digits.slice(12, 14)}`;
+  };
+
   const handlePhoneChange = (e) => {
     const formatted = formatPhone(e.target.value);
     setFormData({ ...formData, telefone: formatted });
+  };
+
+  const handleCNPJChange = (e) => {
+    const formatted = formatCNPJ(e.target.value);
+    setFormData({ ...formData, cnpj: formatted });
   };
 
   const handleSubmit = async (e) => {
@@ -60,18 +76,22 @@ const CadastroAplicadorPage = () => {
         nome: formData.nome,
         email: formData.email,
         senha: formData.senha,
-        telefone: formData.telefone
+        telefone: formData.telefone,
+        cnpj: formData.cnpj,
+        instagram: formData.instagram
       });
 
       if (response.data.success) {
         setSuccess(true);
-        setMessage('Aplicador cadastrado com sucesso! Agora você pode fazer login.');
+        setMessage('Cadastro enviado com sucesso! Seu acesso será liberado em até 24 horas após a aprovação.');
         setFormData({
           nome: '',
           email: '',
           senha: '',
           confirmarSenha: '',
-          telefone: ''
+          telefone: '',
+          cnpj: '',
+          instagram: ''
         });
       }
     } catch (error) {
@@ -126,6 +146,18 @@ const CadastroAplicadorPage = () => {
           </div>
 
           <div className="form-group">
+            <label>CNPJ *</label>
+            <input
+              type="text"
+              name="cnpj"
+              value={formData.cnpj}
+              onChange={handleCNPJChange}
+              placeholder="00.000.000/0000-00"
+              required
+            />
+          </div>
+
+          <div className="form-group">
             <label>Telefone (com DDD)</label>
             <input
               type="tel"
@@ -134,6 +166,20 @@ const CadastroAplicadorPage = () => {
               onChange={handlePhoneChange}
               placeholder="(00) 00000-0000"
             />
+          </div>
+
+          <div className="form-group">
+            <label>Instagram</label>
+            <div className="instagram-wrapper">
+              <span className="instagram-prefix">@</span>
+              <input
+                type="text"
+                name="instagram"
+                value={formData.instagram}
+                onChange={handleChange}
+                placeholder="seu.perfil"
+              />
+            </div>
           </div>
 
           <div className="form-group">
@@ -177,8 +223,13 @@ const CadastroAplicadorPage = () => {
             </div>
           )}
 
+          <div className="approval-notice">
+            <span className="notice-icon">⏳</span>
+            <p>Após o cadastro, seu acesso será analisado e aprovado em até <strong>24 horas</strong>.</p>
+          </div>
+
           <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? 'Cadastrando...' : 'Cadastrar Aplicador'}
+            {loading ? 'Cadastrando...' : 'Enviar Cadastro'}
           </button>
 
           {success && (
