@@ -3,12 +3,11 @@ services:
     name: sistema-igl-credenciados
     runtime: node
     plan: free
-    buildCommand: npm run build
-    startCommand: npm start
+    nodeVersion: "18"
+    buildCommand: npm install && cd client && npm install && CI=false npm run build
+    startCommand: node server.js
     healthCheckPath: /api/health
     envVars:
-      - key: NODE_ENV
-        value: production
       - key: GOOGLE_CREDENTIALS
         sync: false
       - key: SPREADSHEET_ID
