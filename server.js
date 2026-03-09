@@ -242,8 +242,8 @@ async function uploadImageToDrive(filePath, fileName, certificadoId) {
       }
     });
     
-    // Get direct image URL
-    const imageUrl = `https://drive.google.com/uc?export=view&id=${file.data.id}`;
+    // Get direct image URL (thumbnail format works reliably in img tags)
+    const imageUrl = `https://drive.google.com/thumbnail?id=${file.data.id}&sz=w800`;
     
     console.log(`📸 Imagem enviada ao Drive: ${imageUrl}`);
     

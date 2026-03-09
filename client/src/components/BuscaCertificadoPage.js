@@ -310,6 +310,24 @@ const BuscaCertificadoPage = () => {
                       </div>
                     </div>
 
+                    {/* VEHICLE PHOTO */}
+                    {certificado.fotoCarro && (
+                      <div className="vehicle-photo">
+                        <h3>Foto do Veiculo</h3>
+                        <div className="photo-display">
+                          <img 
+                            src={certificado.fotoCarro.includes('drive.google.com/uc?') 
+                              ? certificado.fotoCarro.replace('/uc?export=view&id=', '/thumbnail?id=') + '&sz=w800'
+                              : certificado.fotoCarro
+                            } 
+                            alt={`Veiculo ${certificado.modeloCarro}`} 
+                            className="certificate-photo"
+                            onError={(e) => { e.target.style.display = 'none'; }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
                     {/* WARRANTY PER PRODUCT */}
                     <div className="warranty-section">
                       <h3>Garantia por Produto</h3>
@@ -419,18 +437,6 @@ const BuscaCertificadoPage = () => {
                       )}
                     </div>
                     
-                    {certificado.fotoCarro && (
-                      <div className="vehicle-photo">
-                        <h3>Foto do Veiculo</h3>
-                        <div className="photo-display">
-                          <img 
-                            src={certificado.fotoCarro.startsWith('http') ? certificado.fotoCarro : `${certificado.fotoCarro}`} 
-                            alt={`Veiculo ${certificado.modeloCarro}`} 
-                            className="certificate-photo"
-                          />
-                        </div>
-                      </div>
-                    )}
                   </div>
                   
                   <div className="certificate-footer">
