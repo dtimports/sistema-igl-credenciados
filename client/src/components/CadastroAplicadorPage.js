@@ -83,7 +83,7 @@ const CadastroAplicadorPage = () => {
 
       if (response.data.success) {
         setSuccess(true);
-        setMessage('Cadastro enviado com sucesso! Seu acesso será liberado em até 24 horas após a aprovação.');
+        setMessage('Aplicador cadastrado com sucesso! Agora você pode fazer login.');
         setFormData({
           nome: '',
           email: '',
@@ -223,13 +223,8 @@ const CadastroAplicadorPage = () => {
             </div>
           )}
 
-          <div className="approval-notice">
-            <span className="notice-icon">⏳</span>
-            <p>Após o cadastro, seu acesso será analisado e aprovado em até <strong>24 horas</strong>.</p>
-          </div>
-
           <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? 'Cadastrando...' : 'Enviar Cadastro'}
+            {loading ? 'Cadastrando...' : 'Cadastrar Aplicador'}
           </button>
 
           {success && (

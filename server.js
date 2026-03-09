@@ -643,7 +643,7 @@ app.post('/api/cadastro-aplicador', async (req, res) => {
       telefone: telefone ? telefone.replace(/[^0-9]/g, '') : '',
       cnpj: cnpj ? cnpj.trim() : '',
       instagram: instagram ? instagram.trim().replace(/^@/, '') : '',
-      ativo: false,
+      ativo: true,
       dataCriacao: new Date().toISOString().split('T')[0]
     };
 
@@ -692,14 +692,6 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({
         success: false,
         message: 'Email ou senha incorretos'
-      });
-    }
-
-    // Check if account is pending approval
-    if (!aplicador.ativo) {
-      return res.status(403).json({
-        success: false,
-        message: 'Seu cadastro ainda está em análise. A aprovação leva até 24 horas.'
       });
     }
 
