@@ -551,16 +551,6 @@ const CadastroPage = () => {
           <h2>{clienteExistente ? 'Novo Veiculo / Nova Aplicacao' : 'Dados do Veiculo'}</h2>
           <div className="form-row">
             <div className="form-group">
-              <label>Modelo do Carro *</label>
-              <input
-                type="text"
-                name="modeloCarro"
-                value={formData.modeloCarro}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
               <label>Placa *</label>
               <div className="placa-search-container">
                 <input
@@ -584,6 +574,16 @@ const CadastroPage = () => {
                 </button>
               </div>
               <small className="placa-hint">Digite a placa e clique em buscar para preencher dados automaticamente</small>
+            </div>
+            <div className="form-group">
+              <label>Modelo do Carro *</label>
+              <input
+                type="text"
+                name="modeloCarro"
+                value={formData.modeloCarro}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
           <div className="form-row">
