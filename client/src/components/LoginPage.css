@@ -200,10 +200,23 @@
   margin-bottom: 10px;
 }
 
-.support-email {
-  color: rgba(255, 255, 255, 0.9);
+.register-link-btn {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.register-link-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
 
 /* Responsive Design */

@@ -612,6 +612,65 @@ app.post('/api/buscar-veiculo-por-placa', authenticateToken, async (req, res) =>
   }
 });
 
+// Cadastro de novo aplicador
+app.post('/api/cadastro-aplicador', async (req, res) => {
+  try {
+    const { nome, email, senha, telefone } = req.body;
+
+    if (!nome || !email || !senha) {
+      return res.status(400).json({
+        success: false,
+        message: 'Nome, email e senha são obrigatórios'
+      });
+    }
+
+    // Check if email already exists
+    const emailExiste = aplicadores.find(a => a.email.toLowerCase() === email.toLowerCase());
+    if (emailExiste) {
+      return res.status(400).json({
+        success: false,
+        message: 'Este email já está cadastrado'
+      });
+    }
+
+    // Generate new ID
+    const maxId = aplicadores.length > 0 ? Math.max(...aplicadores.map(a => a.id)) : 0;
+    const novoAplicador = {
+      id: maxId + 1,
+      nome: nome.trim(),
+      email: email.trim().toLowerCase(),
+      senha,
+      telefone: telefone ? telefone.replace(/[^0-9]/g, '') : '',
+      ativo: true,
+      dataCriacao: new Date().toISOString().split('T')[0]
+    };
+
+    aplicadores.push(novoAplicador);
+
+    // Save to file
+    fs.writeFileSync('./aplicadores.json', JSON.stringify(aplicadores, null, 2));
+
+    console.log(`Novo aplicador cadastrado: ${novoAplicador.nome} (${novoAplicador.email})`);
+
+    res.status(201).json({
+      success: true,
+      message: 'Aplicador cadastrado com sucesso!',
+      aplicador: {
+        id: novoAplicador.id,
+        nome: novoAplicador.nome,
+        email: novoAplicador.email
+      }
+    });
+
+  } catch (error) {
+    console.error('Erro ao cadastrar aplicador:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao cadastrar aplicador'
+    });
+  }
+});
+
 // Login endpoint
 app.post('/api/login', async (req, res) => {
   try {

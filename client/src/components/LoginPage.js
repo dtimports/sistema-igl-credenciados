@@ -102,8 +102,14 @@ const LoginPage = () => {
         </form>
 
         <div className="login-footer">
-          <p>Entre em contato com o administrador para obter suas credenciais</p>
-          <p className="support-email">suporte@iglcoatings.com.br</p>
+          <p>Ainda não tem uma conta?</p>
+          <button 
+            type="button" 
+            className="register-link-btn" 
+            onClick={() => navigate('/cadastro-aplicador')}
+          >
+            Cadastrar novo aplicador
+          </button>
         </div>
       </div>
       
