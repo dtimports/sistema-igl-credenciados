@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "nome": "João Silva",
+    "email": "joao@iglcoatings.com.br",
+    "senha": "igl123",
+    "telefone": "5511999999999",
+    "ativo": true,
+    "dataCriacao": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "nome": "Maria Santos",
+    "email": "maria@iglcoatings.com.br",
+    "senha": "igl456",
+    "telefone": "5511988888888",
+    "ativo": true,
+    "dataCriacao": "2024-01-16"
+  },
+  {
+    "id": 3,
+    "nome": "Carlos Oliveira",
+    "email": "carlos@iglcoatings.com.br",
+    "senha": "igl789",
+    "telefone": "5511977777777",
+    "ativo": true,
+    "dataCriacao": "2024-01-17"
+  }
+]

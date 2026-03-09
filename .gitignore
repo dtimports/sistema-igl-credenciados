@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+client/node_modules/
+
+# Environment variables
+.env
+
+# Google credentials (NEVER commit this)
+credentials.json
+
+# Build output
+client/build/
+
+# Uploads
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
