@@ -316,10 +316,7 @@ const BuscaCertificadoPage = () => {
                         <h3>Foto do Veiculo</h3>
                         <div className="photo-display">
                           <img 
-                            src={certificado.fotoCarro.includes('drive.google.com/uc?') 
-                              ? certificado.fotoCarro.replace('/uc?export=view&id=', '/thumbnail?id=') + '&sz=w800'
-                              : certificado.fotoCarro
-                            } 
+                            src={certificado.fotoCarro} 
                             alt={`Veiculo ${certificado.modeloCarro}`} 
                             className="certificate-photo"
                             onError={(e) => { e.target.style.display = 'none'; }}

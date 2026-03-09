@@ -161,84 +161,47 @@ async function initializeSheets() {
   }
 }
 
-// Ensure Google Drive folder exists for storing photos (Shared Drive)
-async function ensureDriveFolder() {
-  try {
-    if (DRIVE_FOLDER_ID) return DRIVE_FOLDER_ID;
-    
-    // Search for existing folder in Shared Drives
-    const searchResponse = await drive.files.list({
-      q: "name='IGL Certificados Fotos' and mimeType='application/vnd.google-apps.folder' and trashed=false",
-      fields: 'files(id, name)',
-      includeItemsFromAllDrives: true,
-      supportsAllDrives: true,
-      corpora: 'allDrives'
-    });
-    
-    if (searchResponse.data.files.length > 0) {
-      const folderId = searchResponse.data.files[0].id;
-      console.log('📁 Pasta do Shared Drive encontrada:', folderId);
-      return folderId;
-    }
-    
-    console.error('❌ DRIVE_FOLDER_ID não configurado e pasta não encontrada no Shared Drive.');
-    console.error('   Configure a variável DRIVE_FOLDER_ID com o ID da pasta no Shared Drive.');
-    return null;
-  } catch (error) {
-    console.error('Erro ao buscar pasta no Drive:', error.message);
-    return null;
-  }
-}
+// ImgBB API key for image hosting
+const IMGBB_API_KEY = process.env.IMGBB_API_KEY || '';
 
-// Upload image to Google Drive (Shared Drive) and return public URL
-async function uploadImageToDrive(filePath, fileName, certificadoId) {
+// Upload image to ImgBB and return public URL
+async function uploadImageToImgBB(filePath, certificadoId) {
   try {
-    const folderId = await ensureDriveFolder();
-    if (!folderId) {
-      console.error('Pasta do Drive não disponível');
+    if (!IMGBB_API_KEY) {
+      console.error('❌ IMGBB_API_KEY não configurada. Configure a variável de ambiente.');
       return null;
     }
-    
-    const fileMetadata = {
-      name: `${certificadoId}_${fileName}`,
-      parents: [folderId]
-    };
-    
-    const media = {
-      mimeType: 'image/jpeg',
-      body: fs.createReadStream(filePath)
-    };
-    
-    const file = await drive.files.create({
-      resource: fileMetadata,
-      media: media,
-      fields: 'id, webViewLink, webContentLink',
-      supportsAllDrives: true
+
+    const imageData = fs.readFileSync(filePath);
+    const base64Image = imageData.toString('base64');
+
+    const FormData = (await import('form-data')).default;
+    const formData = new FormData();
+    formData.append('key', IMGBB_API_KEY);
+    formData.append('image', base64Image);
+    formData.append('name', certificadoId);
+
+    const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
+      headers: formData.getHeaders(),
+      timeout: 30000
     });
-    
-    // Make file publicly accessible
-    await drive.permissions.create({
-      fileId: file.data.id,
-      resource: {
-        role: 'reader',
-        type: 'anyone'
-      },
-      supportsAllDrives: true
-    });
-    
-    // Get direct image URL (thumbnail format works reliably in img tags)
-    const imageUrl = `https://drive.google.com/thumbnail?id=${file.data.id}&sz=w800`;
-    
-    console.log(`📸 Imagem enviada ao Shared Drive: ${imageUrl}`);
-    
-    // Delete local file after upload
-    fs.unlink(filePath, (err) => {
-      if (err) console.error('Erro ao deletar arquivo local:', err.message);
-    });
-    
-    return imageUrl;
+
+    if (response.data && response.data.success) {
+      const imageUrl = response.data.data.display_url;
+      console.log(`📸 Imagem enviada ao ImgBB: ${imageUrl}`);
+
+      // Delete local file after upload
+      fs.unlink(filePath, (err) => {
+        if (err) console.error('Erro ao deletar arquivo local:', err.message);
+      });
+
+      return imageUrl;
+    } else {
+      console.error('Erro no upload ImgBB:', response.data);
+      return null;
+    }
   } catch (error) {
-    console.error('Erro ao enviar imagem ao Drive:', error.message);
+    console.error('Erro ao enviar imagem ao ImgBB:', error.message);
     return null;
   }
 }
@@ -776,12 +739,12 @@ app.post('/api/cadastro', authenticateToken, upload.single('fotoCarro'), async (
       // Keep as-is if not valid JSON
     }
 
-    // Handle file upload - upload to Google Drive
+    // Handle file upload - upload to ImgBB
     let fotoCarroUrl = '';
     if (req.file) {
       const localPath = path.join(__dirname, req.file.path);
-      const driveUrl = await uploadImageToDrive(localPath, req.file.originalname, certificadoId);
-      fotoCarroUrl = driveUrl || '';
+      const imgUrl = await uploadImageToImgBB(localPath, certificadoId);
+      fotoCarroUrl = imgUrl || '';
     }
 
     // Prepare data for Google Sheets
