@@ -165,34 +165,43 @@
   }
   
   .home-content {
-    max-width: 400px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  .logo-section {
+    margin-bottom: 40px;
   }
   
   .logo-circle {
-    width: 234px;
-    height: 234px;
+    width: 200px;
+    height: 200px;
   }
   
   .logo-circle img {
-    max-width: 234px;
-    max-height: 234px;
+    max-width: 200px;
+    max-height: 200px;
   }
   
   .logo-text {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   
   .btn {
-    padding: 18px 32px;
+    padding: 18px 24px;
+  }
+  
+  .btn-text {
     font-size: 1.1rem;
   }
   
   .buttons-section {
-    gap: 20px;
+    gap: 16px;
+    margin-bottom: 40px;
   }
 }
 
@@ -202,33 +211,71 @@
   }
   
   .home-content {
-    max-width: 320px;
+    max-width: 100%;
+    padding: 0 5px;
+  }
+  
+  .logo-section {
+    margin-bottom: 30px;
+  }
+  
+  .logo-wrapper {
+    margin-bottom: 20px;
   }
   
   .logo-circle {
-    width: 195px;
-    height: 195px;
+    width: 160px;
+    height: 160px;
   }
   
   .logo-circle img {
-    max-width: 195px;
-    max-height: 195px;
+    max-width: 160px;
+    max-height: 160px;
   }
   
   .logo-text {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
   }
   
   .subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
   
   .btn {
-    padding: 15px 25px;
+    padding: 16px 20px;
+  }
+  
+  .btn-text {
     font-size: 1rem;
+    letter-spacing: 0.5px;
   }
   
   .buttons-section {
-    gap: 15px;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 360px) {
+  .logo-circle {
+    width: 130px;
+    height: 130px;
+  }
+  
+  .logo-circle img {
+    max-width: 130px;
+    max-height: 130px;
+  }
+  
+  .logo-text {
+    font-size: 1.4rem;
+  }
+  
+  .btn {
+    padding: 14px 16px;
+  }
+  
+  .btn-text {
+    font-size: 0.9rem;
   }
 }

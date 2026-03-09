@@ -725,21 +725,40 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .busca-container {
-    padding: 15px;
+    padding: 12px;
   }
   
   .busca-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+  
+  .busca-header p {
+    font-size: 0.95rem;
+  }
+  
+  .logo-circle-small {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .logo-circle-small img {
+    max-width: 120px;
+    max-height: 120px;
+  }
+  
+  .busca-content {
+    max-width: 100%;
   }
   
   .search-form,
   .certificates-list {
-    padding: 20px;
+    padding: 16px;
+    border-radius: 16px;
   }
   
   .form-row {
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
   }
   
   .form-group {
@@ -749,6 +768,7 @@
   .certificate-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
   }
   
   .certificate-date {
@@ -757,6 +777,7 @@
   
   .info-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .warranty-products-grid {
@@ -766,34 +787,169 @@
   .maintenance-next-card {
     flex-direction: column;
     text-align: center;
+    padding: 14px;
+  }
+  
+  .certificate-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .certificate-photo {
+    max-height: 200px;
+  }
+  
+  .whatsapp-maintenance-btn {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+  
+  .warranty-product-card {
+    padding: 14px;
+  }
+  
+  .maintenance-timeline {
+    padding-left: 15px;
   }
 }
 
 @media (max-width: 480px) {
+  .busca-container {
+    padding: 8px;
+  }
+  
   .busca-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+  }
+  
+  .busca-header p {
+    font-size: 0.85rem;
+  }
+  
+  .logo-circle-small {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .logo-circle-small img {
+    max-width: 90px;
+    max-height: 90px;
   }
   
   .search-form,
   .certificates-list {
-    padding: 15px;
+    padding: 12px;
+    border-radius: 12px;
   }
   
   .form-group input {
-    padding: 10px 12px;
-    font-size: 14px;
+    padding: 11px 12px;
+    font-size: 16px;
+  }
+  
+  .form-group label {
+    font-size: 12px;
   }
   
   .search-btn {
-    padding: 12px;
+    padding: 14px;
     font-size: 16px;
   }
   
   .certificate-card {
-    padding: 15px;
+    padding: 12px;
+    margin-bottom: 15px;
   }
   
   .certificates-list h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .vehicle-info h3,
+  .application-info h3,
+  .warranty-section h3,
+  .maintenance-section h3,
+  .vehicle-photo h3 {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  
+  .info-label {
+    font-size: 11px;
+  }
+  
+  .info-value {
+    font-size: 13px;
+  }
+  
+  .id-value {
+    font-size: 13px;
+    word-break: break-all;
+  }
+  
+  .warranty-product-name {
+    font-size: 14px;
+  }
+  
+  .warranty-duration,
+  .warranty-expiry {
+    font-size: 12px;
+  }
+  
+  .warranty-badge {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+  
+  .maintenance-info-text {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+  
+  .maintenance-next-title {
+    font-size: 14px;
+  }
+  
+  .maintenance-next-date {
+    font-size: 13px;
+  }
+  
+  .whatsapp-maintenance-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  
+  .certificate-photo {
+    max-height: 180px;
+    border-radius: 10px;
+  }
+  
+  .timeline-number {
+    font-size: 13px;
+  }
+  
+  .timeline-date {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .busca-header h1 {
     font-size: 1.3rem;
+  }
+  
+  .search-form,
+  .certificates-list {
+    padding: 10px;
+  }
+  
+  .certificate-card {
+    padding: 10px;
+  }
+  
+  .warranty-product-card {
+    padding: 10px;
   }
 }

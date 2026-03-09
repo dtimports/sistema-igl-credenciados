@@ -131,9 +131,14 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .app-footer {
+    padding: 15px 0 10px;
+    margin-top: 30px;
+  }
+  
   .footer-content {
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     text-align: center;
     padding: 0 15px;
   }
@@ -143,48 +148,79 @@
     gap: 10px;
   }
   
+  .footer-logo-img {
+    width: 100px;
+    height: 100px;
+  }
+  
   .social-links {
     justify-content: center;
     flex-wrap: wrap;
+    gap: 10px;
   }
   
   .social-link {
-    flex: 1;
-    min-width: 140px;
+    flex: 0 1 auto;
+    min-width: 0;
     justify-content: center;
+    padding: 8px 14px;
   }
 }
 
 @media (max-width: 480px) {
   .app-footer {
-    padding: 15px 0 10px;
-    margin-top: 30px;
+    padding: 12px 0 8px;
+    margin-top: 25px;
   }
   
   .footer-content {
     padding: 0 10px;
-    gap: 15px;
+    gap: 12px;
   }
   
   .footer-logo-img {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
   }
   
   .footer-logo h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
+  }
+  
+  .social-links {
+    gap: 8px;
   }
   
   .social-link {
     padding: 6px 10px;
-    font-size: 0.8rem;
   }
   
   .social-link span {
     font-size: 0.8rem;
   }
   
+  .social-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .footer-bottom {
+    margin: 10px auto 0;
+    padding: 8px 10px;
+  }
+  
   .footer-bottom p {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .social-link span {
+    font-size: 0.75rem;
+  }
+  
+  .footer-logo-img {
+    width: 55px;
+    height: 55px;
   }
 }

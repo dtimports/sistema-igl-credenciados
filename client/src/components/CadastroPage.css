@@ -410,8 +410,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 77, 60, 0.04);
+  border: 1px solid #e0e0e0;
   border-radius: 10px;
   padding: 10px 15px;
 }
@@ -419,7 +419,7 @@
 .serial-product-name {
   min-width: 150px;
   font-weight: 600;
-  color: #c8a96e;
+  color: #0a4d3c;
   font-size: 0.9rem;
   white-space: nowrap;
 }
@@ -427,38 +427,22 @@
 .serial-number-item input {
   flex: 1;
   padding: 10px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid #e0e0e0;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
   font-size: 0.95rem;
   transition: all 0.3s ease;
 }
 
 .serial-number-item input:focus {
   outline: none;
-  border-color: #c8a96e;
-  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+  border-color: #0a4d3c;
+  box-shadow: 0 0 0 3px rgba(10, 77, 60, 0.1);
 }
 
 .serial-number-item input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-@media (max-width: 768px) {
-  .serial-number-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-  
-  .serial-product-name {
-    min-width: auto;
-  }
-  
-  .serial-number-item input {
-    width: 100%;
-  }
+  color: #999;
 }
 
 /* Photo Upload Styles */
@@ -539,24 +523,79 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .cadastro-container {
-    padding: 15px;
+    padding: 12px;
   }
   
   .cadastro-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+  
+  .cadastro-header p {
+    font-size: 0.95rem;
+  }
+  
+  .logo-circle-small {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .logo-circle-small img {
+    max-width: 120px;
+    max-height: 120px;
   }
   
   .cadastro-form {
-    padding: 20px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+  
+  .form-section {
+    margin-bottom: 25px;
   }
   
   .form-row {
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
   }
   
   .form-group {
     min-width: 100%;
+  }
+  
+  .placa-search-container {
+    flex-direction: column;
+  }
+  
+  .search-placa-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+  }
+  
+  .serial-number-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  
+  .serial-product-name {
+    min-width: auto;
+  }
+  
+  .serial-number-item input {
+    width: 100%;
+  }
+  
+  .photo-upload-area {
+    padding: 20px;
+  }
+  
+  .upload-icon {
+    font-size: 2rem;
+  }
+  
+  .upload-text p {
+    font-size: 0.95rem;
   }
 }
 
@@ -767,6 +806,12 @@
   .cpf-search-container {
     flex-direction: column;
   }
+  
+  .search-cpf-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+  }
 
   .veiculos-grid {
     grid-template-columns: 1fr;
@@ -774,26 +819,99 @@
 }
 
 @media (max-width: 480px) {
+  .cadastro-container {
+    padding: 8px;
+  }
+  
   .cadastro-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+  }
+  
+  .cadastro-header p {
+    font-size: 0.85rem;
+  }
+  
+  .logo-circle-small {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .logo-circle-small img {
+    max-width: 90px;
+    max-height: 90px;
   }
   
   .cadastro-form {
-    padding: 15px;
+    padding: 12px;
+    border-radius: 12px;
   }
   
   .form-section h2 {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+  }
+  
+  .form-group label {
+    font-size: 12px;
+    margin-bottom: 6px;
   }
   
   .form-group input,
   .form-group select {
-    padding: 10px 12px;
-    font-size: 14px;
+    padding: 11px 12px;
+    font-size: 16px;
   }
   
   .submit-btn {
-    padding: 12px;
+    padding: 14px;
     font-size: 16px;
+  }
+  
+  .user-info {
+    padding: 8px 12px;
+  }
+  
+  .user-info span {
+    font-size: 0.8rem;
+  }
+  
+  .product-tag {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+  
+  .preview-image {
+    max-height: 200px;
+  }
+  
+  .banner-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  .banner-text strong {
+    font-size: 13px;
+  }
+  
+  .banner-text span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cadastro-form {
+    padding: 10px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 10px;
+    font-size: 15px;
+  }
+  
+  .cadastro-header h1 {
+    font-size: 1.3rem;
   }
 }
