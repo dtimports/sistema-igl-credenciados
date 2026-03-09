@@ -398,6 +398,69 @@
   font-weight: 500;
 }
 
+/* Serial Numbers per Product */
+.serial-numbers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.serial-number-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+.serial-product-name {
+  min-width: 150px;
+  font-weight: 600;
+  color: #c8a96e;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.serial-number-item input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.serial-number-item input:focus {
+  outline: none;
+  border-color: #c8a96e;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+}
+
+.serial-number-item input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .serial-number-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  
+  .serial-product-name {
+    min-width: auto;
+  }
+  
+  .serial-number-item input {
+    width: 100%;
+  }
+}
+
 /* Photo Upload Styles */
 .photo-upload-section {
   margin-top: 20px;

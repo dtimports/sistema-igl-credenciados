@@ -40,7 +40,7 @@ const CadastroPage = () => {
     cor: '',
     placa: '',
     produtosAplicados: [],
-    serialNumber: '',
+    serialNumbers: {},
     dataAplicacao: '',
     localAplicado: '',
     estado: ''
@@ -122,7 +122,7 @@ const CadastroPage = () => {
     setFormData({
       nomeCliente: '', telefone: '', email: '', cpf: '',
       dataNascimento: '', endereco: '', modeloCarro: '', cor: '',
-      placa: '', produtosAplicados: [], serialNumber: '',
+      placa: '', produtosAplicados: [], serialNumbers: {},
       dataAplicacao: '', localAplicado: '', estado: ''
     });
     setMessage('');
@@ -220,10 +220,15 @@ const CadastroPage = () => {
   };
 
   const handleRemoveProduct = (product) => {
-    setFormData(prev => ({
-      ...prev,
-      produtosAplicados: prev.produtosAplicados.filter(p => p !== product)
-    }));
+    setFormData(prev => {
+      const newSerials = { ...prev.serialNumbers };
+      delete newSerials[product];
+      return {
+        ...prev,
+        produtosAplicados: prev.produtosAplicados.filter(p => p !== product),
+        serialNumbers: newSerials
+      };
+    });
   };
 
   const handlePlacaSearch = async () => {
@@ -277,6 +282,8 @@ const CadastroPage = () => {
       Object.keys(formData).forEach(key => {
         if (key === 'produtosAplicados') {
           formDataToSend.append(key, JSON.stringify(formData[key]));
+        } else if (key === 'serialNumbers') {
+          formDataToSend.append('serialNumber', JSON.stringify(formData[key]));
         } else {
           formDataToSend.append(key, formData[key]);
         }
@@ -314,7 +321,7 @@ const CadastroPage = () => {
           cor: '',
           placa: '',
           produtosAplicados: [],
-          serialNumber: '',
+          serialNumbers: {},
           dataAplicacao: '',
           localAplicado: '',
           estado: ''
@@ -605,19 +612,6 @@ const CadastroPage = () => {
           <h2>🔧 Dados da Aplicação</h2>
           <div className="form-row">
             <div className="form-group full-width">
-              <label>Serial Number *</label>
-              <input
-                type="text"
-                name="serialNumber"
-                value={formData.serialNumber}
-                onChange={handleChange}
-                placeholder="Digite o serial number do produto"
-                required
-              />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group full-width">
               <label>Produtos Aplicados *</label>
               <div className="products-selection">
                 <div className="selected-products">
@@ -672,6 +666,38 @@ const CadastroPage = () => {
               </div>
             </div>
           </div>
+
+          {/* Serial Numbers - one per product */}
+          {formData.produtosAplicados.length > 0 && (
+            <div className="form-row">
+              <div className="form-group full-width">
+                <label>Serial Numbers * (um para cada produto)</label>
+                <div className="serial-numbers-list">
+                  {formData.produtosAplicados.map(product => (
+                    <div key={product} className="serial-number-item">
+                      <span className="serial-product-name">{product}</span>
+                      <input
+                        type="text"
+                        value={formData.serialNumbers[product] || ''}
+                        onChange={(e) => {
+                          setFormData(prev => ({
+                            ...prev,
+                            serialNumbers: {
+                              ...prev.serialNumbers,
+                              [product]: e.target.value
+                            }
+                          }));
+                        }}
+                        placeholder={`Serial number do ${product}`}
+                        required
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="form-row">
             <div className="form-group">
               <label>Data da Aplicação *</label>

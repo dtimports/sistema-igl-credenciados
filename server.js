@@ -781,6 +781,17 @@ app.post('/api/cadastro', authenticateToken, upload.single('fotoCarro'), async (
       }
     }
 
+    // Handle serial numbers (JSON object: product -> serial)
+    let serialNumberStr = serialNumber;
+    try {
+      const serialObj = typeof serialNumber === 'string' ? JSON.parse(serialNumber) : serialNumber;
+      if (typeof serialObj === 'object' && serialObj !== null) {
+        serialNumberStr = Object.entries(serialObj).map(([prod, sn]) => `${prod}: ${sn}`).join(', ');
+      }
+    } catch (e) {
+      // Keep as-is if not valid JSON
+    }
+
     // Handle file upload - upload to Google Drive
     let fotoCarroUrl = '';
     if (req.file) {
@@ -803,7 +814,7 @@ app.post('/api/cadastro', authenticateToken, upload.single('fotoCarro'), async (
       cor,
       placa,
       Array.isArray(produtosAplicadosList) ? produtosAplicadosList.join(', ') : produtosAplicadosList,
-      serialNumber,
+      serialNumberStr,
       dataAplicacao,
       localAplicado,
       estado,
