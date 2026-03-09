@@ -861,6 +861,11 @@ app.post('/api/buscar-certificados', async (req, res) => {
   }
 });
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Serve static files from React app
 app.use(express.static('client/build'));
 
