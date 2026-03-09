@@ -20,6 +20,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Health check endpoint (before all other routes)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // JWT Secret
 const JWT_SECRET = process.env.JWT_SECRET || 'igl_coatings_secret_key_2024';
 
@@ -861,11 +866,6 @@ app.post('/api/buscar-certificados', async (req, res) => {
   }
 });
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
 // Serve static files from React app
 app.use(express.static('client/build'));
 
@@ -877,5 +877,9 @@ app.listen(PORT, async () => {
   console.log(`Servidor rodando na porta ${PORT}`);
   
   // Initialize Google Sheets on startup
-  await initializeSheets();
+  try {
+    await initializeSheets();
+  } catch (error) {
+    console.error('Erro ao inicializar Google Sheets:', error.message);
+  }
 });
