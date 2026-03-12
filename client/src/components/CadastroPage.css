@@ -462,6 +462,161 @@
   color: #999;
 }
 
+/* Barcode Scan Button */
+.scan-barcode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border: 2px solid #0a4d3c;
+  border-radius: 10px;
+  background: rgba(10, 77, 60, 0.08);
+  color: #0a4d3c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.scan-barcode-btn:hover {
+  background: #0a4d3c;
+  color: white;
+  transform: scale(1.05);
+}
+
+.scan-barcode-btn:active {
+  transform: scale(0.95);
+}
+
+/* Scanner Modal */
+.scanner-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  animation: scannerFadeIn 0.25s ease;
+}
+
+@keyframes scannerFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.scanner-modal-content {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  animation: scannerSlideUp 0.3s ease;
+}
+
+@keyframes scannerSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scanner-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f0f0f0;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.scanner-close-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.scanner-title {
+  text-align: center;
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 700;
+}
+
+.scanner-product-label {
+  text-align: center;
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #0a4d3c;
+  font-weight: 600;
+}
+
+.scanner-viewport {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  min-height: 250px;
+}
+
+.scanner-viewport video {
+  width: 100% !important;
+  border-radius: 12px;
+}
+
+.scanner-error {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.scanner-hint {
+  text-align: center;
+  margin: 12px 0 0 0;
+  font-size: 13px;
+  color: #888;
+}
+
+@media (max-width: 480px) {
+  .scanner-modal-overlay {
+    padding: 10px;
+  }
+
+  .scanner-modal-content {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .scanner-viewport {
+    min-height: 200px;
+  }
+
+  .scan-barcode-btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+  }
+}
+
 /* Photo Upload Styles */
 .photo-upload-section {
   margin-top: 20px;

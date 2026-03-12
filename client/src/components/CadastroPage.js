@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Html5Qrcode } from 'html5-qrcode';
 import './CadastroPage.css';
 import Footer from './Footer';
 
@@ -55,6 +56,104 @@ const CadastroPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  // Barcode scanner state
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scannerProduct, setScannerProduct] = useState('');
+  const [scannerError, setScannerError] = useState('');
+  const html5QrCodeRef = useRef(null);
+  const scannerContainerId = 'barcode-scanner-container';
+
+  const stopScanner = useCallback(async () => {
+    if (html5QrCodeRef.current) {
+      try {
+        const state = html5QrCodeRef.current.getState();
+        if (state === 2) { // SCANNING
+          await html5QrCodeRef.current.stop();
+        }
+      } catch (e) {
+        // ignore
+      }
+      html5QrCodeRef.current = null;
+    }
+  }, []);
+
+  const openScanner = (product) => {
+    setScannerProduct(product);
+    setScannerOpen(true);
+    setScannerError('');
+  };
+
+  const closeScanner = useCallback(async () => {
+    await stopScanner();
+    setScannerOpen(false);
+    setScannerProduct('');
+    setScannerError('');
+  }, [stopScanner]);
+
+  // Start scanner when modal opens
+  useEffect(() => {
+    if (!scannerOpen) return;
+
+    const startScanner = async () => {
+      // Small delay to ensure DOM is ready
+      await new Promise(r => setTimeout(r, 300));
+
+      const container = document.getElementById(scannerContainerId);
+      if (!container) return;
+
+      try {
+        const html5QrCode = new Html5Qrcode(scannerContainerId);
+        html5QrCodeRef.current = html5QrCode;
+
+        await html5QrCode.start(
+          { facingMode: 'environment' },
+          {
+            fps: 10,
+            qrbox: { width: 280, height: 120 },
+            aspectRatio: 1.0,
+            formatsToSupport: [
+              0,  // QR_CODE
+              4,  // CODE_128
+              2,  // CODE_39
+              3,  // CODE_93
+              1,  // AZTEC
+              10, // EAN_13
+              9,  // EAN_8
+              6,  // ITF
+              8,  // UPC_A
+              12, // UPC_E
+              5,  // CODABAR
+              11, // DATA_MATRIX
+            ],
+          },
+          (decodedText) => {
+            // Success - fill the serial number
+            setFormData(prev => ({
+              ...prev,
+              serialNumbers: {
+                ...prev.serialNumbers,
+                [scannerProduct]: decodedText
+              }
+            }));
+            closeScanner();
+          },
+          () => {
+            // ignore scan failures (no code found yet)
+          }
+        );
+      } catch (err) {
+        console.error('Erro ao iniciar scanner:', err);
+        setScannerError('Nao foi possivel acessar a camera. Verifique as permissoes do navegador.');
+      }
+    };
+
+    startScanner();
+
+    return () => {
+      stopScanner();
+    };
+  }, [scannerOpen, scannerProduct, closeScanner, stopScanner]);
 
   // CPF search state
   const [searchingCPF, setSearchingCPF] = useState(false);
@@ -694,6 +793,17 @@ const CadastroPage = () => {
                         placeholder={`Serial number do ${product}`}
                         required
                       />
+                      <button
+                        type="button"
+                        className="scan-barcode-btn"
+                        onClick={() => openScanner(product)}
+                        title="Escanear codigo de barras"
+                      >
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                          <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -769,6 +879,24 @@ const CadastroPage = () => {
         </button>
       </form>
       
+      {/* Barcode Scanner Modal */}
+      {scannerOpen && (
+        <div className="scanner-modal-overlay" onClick={closeScanner}>
+          <div className="scanner-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="scanner-close-btn" onClick={closeScanner}>✕</button>
+            <h3 className="scanner-title">Escanear Codigo de Barras</h3>
+            <p className="scanner-product-label">{scannerProduct}</p>
+            <div className="scanner-viewport">
+              <div id={scannerContainerId}></div>
+            </div>
+            {scannerError && (
+              <div className="scanner-error">{scannerError}</div>
+            )}
+            <p className="scanner-hint">Aponte a camera para o codigo de barras do produto</p>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
